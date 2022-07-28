@@ -116,6 +116,9 @@ root_window = Tk()
 root_window.title("Folder Maker")
 root_window.geometry("600x500")
 
+IMG = PhotoImage(file= r"/Users/nikolay/Python/Spectr_Course/SharedFolder/Lesson42_TkInter_FileDialog/HomeWork/f.png")
+icon1 = IMG.subsample(3, 3)
+
 # Root frames
 info_frame = Frame(root_window)
 buttons_frame = Frame(root_window)
@@ -130,10 +133,10 @@ info = Label(info_frame)
 info.pack(expand=True, fill=BOTH)
 
 # buttons_frame widgets
-Button(buttons_frame, text="Open file", command=open_file).grid(
+Button(buttons_frame, text="Open file", image=icon1, compound=RIGHT, command=open_file, bg="#f2f2f2").grid(
     row=0, padx=5, pady=5, sticky=(W, E))
 Button(buttons_frame, text="Display students list",
-       command=display_students).grid(row=1, padx=5, pady=5, sticky=(W, E))
+       command=display_students, bg="#f2f2f2").grid(row=1, padx=5, pady=5, sticky=(W, E))
 
 # list_frame: configuration, widgets
 list_frame.columnconfigure(0, weight=1)
