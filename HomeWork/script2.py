@@ -16,7 +16,6 @@ selected_students = []
 create_folder_button = None
 
 
-
 def open_file():
     file_path = filedialog.askopenfilename(
         title="Your Choise",
@@ -52,40 +51,42 @@ def get_selected_student(e):
         selected_students.append(e.widget.get(i).split(';'))
     # selected_student = e.widget.get(ANCHOR).strip().split(',') # get the selected student from the list box
     # print(selected_students)
-    
+
     # create new button -> create folders
     add_remove_button(e)
     pass
+
 
 def create_folders():
     global selected_students
     print("create folders------------------------------------------------------")
     create_studetns_folders()
     count = 0
-    
+
     for next_stud in selected_students:
         # print("---",next_stud)
-        
-        ## create folder for each student
+
+        # create folder for each student
         name_of_folder = (next_stud[0].strip().split(','))[3]
         name_of_course = (next_stud[0].strip().split(','))[7]
         create_folder(name_of_folder)
         create_folder(name_of_folder + "/" + name_of_course)
         count += 1
         pass
-        
+
     students_list_box.selection_clear(0, END)
     info.config(text=f"{count} folders created")
     count = 0
     pass
+
 
 def add_remove_button(e):
     global create_folder_button
     # create new button -> create folders
     print(f"add remove button: {len (e.widget.curselection())}")
     print(buttons_frame.winfo_children())
-    
-    if len (e.widget.curselection()) == 0:
+
+    if len(e.widget.curselection()) == 0:
         # remove button
         if create_folder_button is not None:
             print("remove button")
@@ -96,28 +97,34 @@ def add_remove_button(e):
         # create button if not exist
         if create_folder_button is None:
             print("create button")
-            create_folder_button = Button(buttons_frame, text="Create Folders", command=create_folders)
-            create_folder_button.grid(row=2,padx=5, pady=5, sticky=(W, E))
+            create_folder_button = Button(
+                buttons_frame, text="Create Folders", command=create_folders, image=icon2, compound=RIGHT)
+            create_folder_button.grid(row=2, padx=5, pady=5, sticky=(W, E))
             # if buttons_frame.winfo_exists():
-                # print(buttons_frame.winfo_children()[2])
+            # print(buttons_frame.winfo_children()[2])
         pass
+
 
 def create_studetns_folders():
     if not os.path.exists(STUDENTS_FOLDERS):
         os.mkdir(STUDENTS_FOLDERS)
     pass
 
+
 def create_folder(name_of_folder):
     if not os.path.exists(os.path.join(STUDENTS_FOLDERS, name_of_folder)):
         os.mkdir(os.path.join(STUDENTS_FOLDERS, name_of_folder))
     pass
 
+
 root_window = Tk()
 root_window.title("Folder Maker")
 root_window.geometry("600x500")
 
-IMG = PhotoImage(file= r"/Users/nikolay/Python/Spectr_Course/SharedFolder/Lesson42_TkInter_FileDialog/HomeWork/f.png")
-icon1 = IMG.subsample(3, 3)
+IMG1 = PhotoImage(file=PROJECT_FOLDER + "/" + "f.png")
+icon1 = IMG1.subsample(5, 5)
+IMG2 = PhotoImage(file=PROJECT_FOLDER + "/" + "f2.png")
+icon2 = IMG2.subsample(5, 5)
 
 # Root frames
 info_frame = Frame(root_window)
@@ -133,10 +140,10 @@ info = Label(info_frame)
 info.pack(expand=True, fill=BOTH)
 
 # buttons_frame widgets
-Button(buttons_frame, text="Open file", image=icon1, compound=RIGHT, command=open_file, bg="#f2f2f2").grid(
+Button(buttons_frame, text="Open file", image=icon1, compound=RIGHT, command=open_file).grid(
     row=0, padx=5, pady=5, sticky=(W, E))
 Button(buttons_frame, text="Display students list",
-       command=display_students, bg="#f2f2f2").grid(row=1, padx=5, pady=5, sticky=(W, E))
+       command=display_students).grid(row=1, padx=5, pady=5, sticky=(W, E))
 
 # list_frame: configuration, widgets
 list_frame.columnconfigure(0, weight=1)
