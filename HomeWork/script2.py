@@ -7,9 +7,8 @@ if platform == 'darwin':
     from tkmacosx import *
 
 PROJECT_FOLDER = os.path.dirname(os.path.abspath(__file__))
-FILE_TYPES = [("Text files", "*.txt"),
-              ("Python files", "*.py"),
-              ("CSV files", "*.csv")]
+STUDENTS_FOLDERS = os.path.join(PROJECT_FOLDER, "students")
+FILE_TYPES = [("CSV files", "*.csv")]
 
 headers = ""
 students_list = []
@@ -45,14 +44,14 @@ def display_students():
 
 
 def get_selected_student(e):
-    print(e.widget.get(ANCHOR))  # get the selected student from the list box
+    # print(e.widget.get(ANCHOR))  # get the selected student from the list box
     info.config(text=e.widget.get(ANCHOR))
     global selected_students
     selected_students = []
     for i in e.widget.curselection():
         selected_students.append(e.widget.get(i).split(';'))
     # selected_student = e.widget.get(ANCHOR).strip().split(',') # get the selected student from the list box
-    print(selected_students)
+    # print(selected_students)
     
     # create new button -> create folders
     add_remove_button(e)
@@ -60,15 +59,24 @@ def get_selected_student(e):
 
 def create_folders():
     global selected_students
-    print("create folders")
-    print("selected students", selected_students)
+    print("create folders------------------------------------------------------")
+    create_studetns_folders()
+    count = 0
     
     for next_stud in selected_students:
-        print(next_stud)
+        # print("---",next_stud)
         
         ## create folder for each student
-       
-    
+        name_of_folder = (next_stud[0].strip().split(','))[3]
+        name_of_course = (next_stud[0].strip().split(','))[7]
+        create_folder(name_of_folder)
+        create_folder(name_of_folder + "/" + name_of_course)
+        count += 1
+        pass
+        
+    students_list_box.selection_clear(0, END)
+    info.config(text=f"{count} folders created")
+    count = 0
     pass
 
 def add_remove_button(e):
@@ -90,11 +98,19 @@ def add_remove_button(e):
             print("create button")
             create_folder_button = Button(buttons_frame, text="Create Folders", command=create_folders)
             create_folder_button.grid(row=2,padx=5, pady=5, sticky=(W, E))
-            if buttons_frame.winfo_exists():
-                print(buttons_frame.winfo_children()[2])
+            # if buttons_frame.winfo_exists():
+                # print(buttons_frame.winfo_children()[2])
         pass
 
+def create_studetns_folders():
+    if not os.path.exists(STUDENTS_FOLDERS):
+        os.mkdir(STUDENTS_FOLDERS)
+    pass
 
+def create_folder(name_of_folder):
+    if not os.path.exists(os.path.join(STUDENTS_FOLDERS, name_of_folder)):
+        os.mkdir(os.path.join(STUDENTS_FOLDERS, name_of_folder))
+    pass
 
 root_window = Tk()
 root_window.title("Folder Maker")
